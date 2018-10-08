@@ -20,6 +20,14 @@ public class Service1Controller {
 	@GetMapping()
 	public Flux<Service1Bean> getAll() {
 		LOGGER.info("getAll");
+		LOGGER.info("sleeping for 3 seconds");
+		try {
+			Thread.sleep(3000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+
+		LOGGER.info("returning");
 		return Flux.just(new Service1Bean("1"), new Service1Bean("2"));
 	}
 
