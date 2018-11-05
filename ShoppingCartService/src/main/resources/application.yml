@@ -3,4 +3,4 @@ server:
   
 spring:
   application:
-    name: service-1
+    name: shopping-cart-service

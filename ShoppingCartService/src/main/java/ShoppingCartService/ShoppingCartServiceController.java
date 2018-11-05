@@ -1,4 +1,4 @@
-package service1;
+package ShoppingCartService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,9 +15,9 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @RestController
-public class Service1Controller implements ApplicationListener<ApplicationReadyEvent> {
+public class ShoppingCartServiceController implements ApplicationListener<ApplicationReadyEvent> {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(Service1Controller.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(ShoppingCartServiceController.class);
 
 	@Autowired
 	private WebClient.Builder webClientBuilder;
@@ -32,16 +32,16 @@ public class Service1Controller implements ApplicationListener<ApplicationReadyE
     }
 
 	@GetMapping()
-	public Flux<Service1Bean> getAll() {
+	public Flux<ShoppingCartServiceBean> getAll() {
 		LOGGER.info("getAll");
 		waitFor2Seconds();
 
 		LOGGER.info("returning flux");
-		return Flux.just(new Service1Bean("1"), new Service1Bean("2"));
+		return Flux.just(new ShoppingCartServiceBean("1", "kakemann@kake.no"), new ShoppingCartServiceBean("2", "pepperkake@kake.no"));
 	}
 
 	@PostMapping()
-	Mono<Void> create(@RequestBody Service1Bean bean) {
+	Mono<Void> create(@RequestBody ShoppingCartServiceBean bean) {
 		LOGGER.info("create: id={}", bean.getId());
 		waitFor2Seconds();
 		return Mono.empty();

@@ -9,8 +9,9 @@
 	<modules>
 		<module>discovery</module>
 		<module>gateway</module>
-		<module>service1</module>
-		<module>service2</module>
+                <module>DeliveryService</module>
+                <module>ProductService</module>
+		<module>ShoppingCartService</module>
 	</modules>
 
 </project>
