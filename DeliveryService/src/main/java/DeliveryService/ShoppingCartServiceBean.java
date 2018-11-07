@@ -1,6 +1,5 @@
 package DeliveryService;
 
-import ShoppingCartService.ProductServiceBean;
 
 import java.util.ArrayList;
 
