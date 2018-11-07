@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>spring-micro</groupId>
-	<artifactId>service1</artifactId>
+	<artifactId>ProductService</artifactId>
 	<version>1.0-SNAPSHOT</version>
 
 	<parent>

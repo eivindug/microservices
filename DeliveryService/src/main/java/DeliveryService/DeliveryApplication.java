@@ -1,4 +1,4 @@
-package service1;
+package DeliveryService;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -9,10 +9,10 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 @SpringBootApplication
 @EnableEurekaClient
-public class Service1Application {
+public class DeliveryApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(Service1Application.class, args);
+		SpringApplication.run(DeliveryApplication.class, args);
 	}
 
 	@Bean

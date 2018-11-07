@@ -1,22 +1,25 @@
 package ShoppingCartService;
 
+import java.util.ArrayList;
+
 public class ShoppingCartServiceBean {
         private String email;
-	private String id;
-
+	private int id;
+        private ArrayList<ProductServiceBean> shoppingCart= new ArrayList<ProductServiceBean>();
+        
 	public ShoppingCartServiceBean() {
 	}
 
-	ShoppingCartServiceBean(String id, String email) {
+	ShoppingCartServiceBean(int id, String email) {
 		this.id = id;
                 this.email = email;
 	}
 
-	public String getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(String id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
@@ -27,6 +30,14 @@ public class ShoppingCartServiceBean {
         public void setEmail(String email) {
             this.email = email;
         }
+        public void addToShoppingCart(ProductServiceBean bean){
+            shoppingCart.add(bean);
+        }
+        public ArrayList<ProductServiceBean> getShoppingCart() {
+            return shoppingCart;
+        }
+        
+        
 	@Override
 	public String toString() {
 		return "ShoppingCartServiceBean [id=" + id + ", email=" + email + "]";

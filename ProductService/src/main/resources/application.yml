@@ -1,6 +1,6 @@
 server:
-  port: 2222
+  port: 2228
   
 spring:
   application:
-    name: service-1
+    name: product-service
