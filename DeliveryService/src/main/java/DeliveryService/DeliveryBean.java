@@ -5,7 +5,7 @@ public class DeliveryBean {
 
 	private String id;
 	private String status;
-	private Service1Bean shoppingcart;
+	private ShoppingCartServiceBean shoppingcart;
 
 	public DeliveryBean() {
 	}
@@ -30,11 +30,11 @@ public class DeliveryBean {
         this.status = status;
     }
 
-    public Service1Bean getShoppingCartBean() {
+    public ShoppingCartServiceBean getShoppingCartBean() {
         return shoppingcart;
     }
 
-    public void setShoppingcartBean(Service1Bean shoppingcart) {
+    public void setShoppingcartBean(ShoppingCartServiceBean shoppingcart) {
         this.shoppingcart = shoppingcart;
     }
 
