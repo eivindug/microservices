@@ -63,11 +63,11 @@ public class DeliveryController implements ApplicationListener<ApplicationReadyE
 //		return Flux.just(new DeliveryService.DeliveryBean("1"), new DeliveryService.DeliveryBean("2"));
 //	}
 	@GetMapping(value = "/getStatus/{orderId}", produces = MediaType.APPLICATION_JSON_VALUE)
-	Mono<DeliveryBean> getOrder(@RequestParam("orderId") int id){
-    	LOGGER.info("Get order " + id);
+	Mono<DeliveryBean> getOrder(@PathVariable int orderId){
+    	LOGGER.info("Get order " + orderId);
     	DeliveryBean ret = null;
     	for (DeliveryBean dl : deliveryBeans){
-    		if (dl.getId().equals(""+id) ){
+    		if (dl.getId().equals(""+orderId) ){
     			return Mono.just(dl);
 			}
 		}
@@ -76,38 +76,32 @@ public class DeliveryController implements ApplicationListener<ApplicationReadyE
 
 	private Mono<Void> updateStatus(String orderId, String status){
     	for (int i = 0; i < deliveryBeans.size();i++){
-    		if (deliveryBeans.get(i).equals(""+orderId)){
+    		if (deliveryBeans.get(i).getId().equals(""+orderId)){
     			deliveryBeans.get(i).setStatus(status);
 			}
 		}
+
 		return Mono.empty();
 	}
 
-	@PostMapping(value = "/deliverOrder/")
-	Mono<Void> deliverOrder(@RequestBody ShoppingCartServiceBean shoppingCartServiceBean) {
-    	String x = "";
-    	for (DeliveryBean dl : deliveryBeans){
-    		if (dl.getShoppingCartBean().getId() == shoppingCartServiceBean.getId()){
-    			x = dl.getId();
-			}
-		}
-		if (x.equals("")){
-    		return Mono.empty();
-		}
-
-
+	@PostMapping(value = "/deliverOrder/{orderId}")
+	Mono<Void> deliverOrder(@PathVariable int orderId) {
+    	String x = ""+orderId;
 		LOGGER.info("create: id={}", x);
 		updateStatus(x, "pending");
-		waitFor2Seconds();
-
+		waitFor5Seconds();
+		updateStatus(x,"under delivery");
+		waitFor5Seconds();
+		updateStatus(x, "Delivered");
+		System.out.println(deliveryBeans);
 
 		return Mono.empty();
 	}
 
-	private void waitFor2Seconds() {
+	private void waitFor5Seconds() {
 		LOGGER.info("sleeping for 2 seconds");
 		try {
-			Thread.sleep(2000);
+			Thread.sleep(5000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
