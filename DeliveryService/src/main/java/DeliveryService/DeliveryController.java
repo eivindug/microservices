@@ -53,20 +53,6 @@ public class DeliveryController implements ApplicationListener<ApplicationReadyE
 
     	return Mono.just(db.getId());
 	}
-    @PostMapping(value="/deliverOrder/{orderId}")
-     public Mono<Void> deliverOrder(@PathVariable Integer orderId) {
-            System.out.println("Hei det er hugo nordseth her");
-            /*String x = ""+orderId;
-            LOGGER.info("create: id={}", x);
-            updateStatus(x, "pending");
-            waitFor5Seconds();
-            updateStatus(x, "under delivery");
-            waitFor5Seconds();
-            updateStatus(x, "Delivered");
-            System.out.println(deliveryBeans);*/
-            
-            return Mono.empty();
-	}
 //	@GetMapping()
 //	public Flux<DeliveryService.DeliveryBean> getAll() {
 //		LOGGER.info("getAll");
@@ -87,20 +73,37 @@ public class DeliveryController implements ApplicationListener<ApplicationReadyE
 		return Mono.empty();
 	}
 
-	private void updateStatus(String orderId, String status){
+	private Mono<Void> updateStatus(String orderId, String status){
     	for (int i = 0; i < deliveryBeans.size();i++){
     		if (deliveryBeans.get(i).getId().equals(""+orderId)){
     			deliveryBeans.get(i).setStatus(status);
 			}
 		}
+
+		return Mono.empty();
 	}
 
-	private void waitFor5Seconds() {
-		LOGGER.info("sleeping for 2 seconds");
+	@PostMapping(value = "/deliverOrder/{orderId}")
+	Mono<Void> deliverOrder(@PathVariable String orderId) {
+    	String x = orderId;
+		LOGGER.info("create: id={}", x);
+		updateStatus(x, "pending");
+		waitFor5Seconds();
+		updateStatus(x,"under delivery");
+		waitFor5Seconds();
+		updateStatus(x, "Delivered");
+		System.out.println(deliveryBeans);
+
+		return Mono.empty();
+	}
+
+	private Mono<Void> waitFor5Seconds() {
+		LOGGER.info("sleeping for 5 seconds");
 		try {
 			Thread.sleep(5000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+		return Mono.empty();
 	}
 }
