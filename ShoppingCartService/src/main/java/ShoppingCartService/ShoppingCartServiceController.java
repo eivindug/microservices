@@ -29,13 +29,14 @@ public class ShoppingCartServiceController implements ApplicationListener<Applic
 	@Autowired
 	private WebClient.Builder webClientBuilder;
 
+
     @Override
     public void onApplicationEvent(final ApplicationReadyEvent event) {
         LOGGER.info("Service1Controller: init");
         
 
-        Flux<Product> messages = webClientBuilder.build().get().uri("http://product-service/products/get").retrieve().bodyToFlux(Product.class);
-        messages.subscribe(message -> products.add(message));
+//        Flux<Product> messages = webClientBuilder.build().get().uri("http://product-service/products/get").retrieve().bodyToFlux(Product.class);
+  //      messages.subscribe(message -> products.add(message));
     }
 	@PostMapping(value="/post", consumes = MediaType.APPLICATION_JSON_VALUE)
 	Mono<Void> create(@RequestBody Item item) {
@@ -70,7 +71,7 @@ public class ShoppingCartServiceController implements ApplicationListener<Applic
 		return null;
         }
         @PostMapping(value="/{email}")
-        public Mono<Integer> postPurchase(@PathVariable String email){
+        public Mono<String> postPurchase(@PathVariable String email){
             int index=-1;
             for(int x=0; x<shoppingCarts.size(); x++){
                     if(shoppingCarts.get(x).getEmail().equals(email)){
@@ -80,9 +81,13 @@ public class ShoppingCartServiceController implements ApplicationListener<Applic
             }
             
             WebClient.RequestHeadersSpec p = webClientBuilder.build().post().uri("http://delivery-service/createorder").body(BodyInserters.fromObject(shoppingCarts.get(index)));
-            Mono<Integer> id= p.retrieve().bodyToMono(Integer.class);
-            id.subscribe(value -> webClientBuilder.build().post().uri("http://delivery-service/deliverOrder").body(BodyInserters.fromObject(value)));
+            Mono<String> id= p.retrieve().bodyToMono(String.class);
+            id.subscribe(value -> webClientBuilder.build().post().uri("http://delivery-service/deliverOrder/" +value).body(BodyInserters.fromObject(value)));
             return id;
+        }
+        public  Mono<Void> handleRequest(String s){
+            webClientBuilder.build().post().uri("http://delivery-service/deliverOrder/" +s).body(BodyInserters.fromObject(s));
+            return Mono.empty();
         }
 
     private static class Item {

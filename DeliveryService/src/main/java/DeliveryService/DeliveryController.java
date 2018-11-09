@@ -85,8 +85,8 @@ public class DeliveryController implements ApplicationListener<ApplicationReadyE
 	}
 
 	@PostMapping(value = "/deliverOrder/{orderId}")
-	Mono<Void> deliverOrder(@PathVariable int orderId) {
-    	String x = ""+orderId;
+	Mono<Void> deliverOrder(@PathVariable String orderId) {
+    	String x = orderId;
 		LOGGER.info("create: id={}", x);
 		updateStatus(x, "pending");
 		waitFor5Seconds();
@@ -98,12 +98,13 @@ public class DeliveryController implements ApplicationListener<ApplicationReadyE
 		return Mono.empty();
 	}
 
-	private void waitFor5Seconds() {
-		LOGGER.info("sleeping for 2 seconds");
+	private Mono<Void> waitFor5Seconds() {
+		LOGGER.info("sleeping for 5 seconds");
 		try {
 			Thread.sleep(5000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+		return Mono.empty();
 	}
 }
