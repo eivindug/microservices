@@ -53,7 +53,20 @@ public class DeliveryController implements ApplicationListener<ApplicationReadyE
 
     	return Mono.just(db.getId());
 	}
-
+    @PostMapping(value="/deliverOrder/{orderId}")
+     public Mono<Void> deliverOrder(@PathVariable Integer orderId) {
+            System.out.println("Hei det er hugo nordseth her");
+            /*String x = ""+orderId;
+            LOGGER.info("create: id={}", x);
+            updateStatus(x, "pending");
+            waitFor5Seconds();
+            updateStatus(x, "under delivery");
+            waitFor5Seconds();
+            updateStatus(x, "Delivered");
+            System.out.println(deliveryBeans);*/
+            
+            return Mono.empty();
+	}
 //	@GetMapping()
 //	public Flux<DeliveryService.DeliveryBean> getAll() {
 //		LOGGER.info("getAll");
@@ -62,7 +75,7 @@ public class DeliveryController implements ApplicationListener<ApplicationReadyE
 //		LOGGER.info("returning flux");
 //		return Flux.just(new DeliveryService.DeliveryBean("1"), new DeliveryService.DeliveryBean("2"));
 //	}
-	@GetMapping(value = "/getStatus/{orderId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value="/getStatus/{orderId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	Mono<DeliveryBean> getOrder(@PathVariable int orderId){
     	LOGGER.info("Get order " + orderId);
     	DeliveryBean ret = null;
@@ -74,28 +87,12 @@ public class DeliveryController implements ApplicationListener<ApplicationReadyE
 		return Mono.empty();
 	}
 
-	private Mono<Void> updateStatus(String orderId, String status){
+	private void updateStatus(String orderId, String status){
     	for (int i = 0; i < deliveryBeans.size();i++){
     		if (deliveryBeans.get(i).getId().equals(""+orderId)){
     			deliveryBeans.get(i).setStatus(status);
 			}
 		}
-
-		return Mono.empty();
-	}
-
-	@PostMapping(value = "/deliverOrder/{orderId}")
-	Mono<Void> deliverOrder(@PathVariable int orderId) {
-    	String x = ""+orderId;
-		LOGGER.info("create: id={}", x);
-		updateStatus(x, "pending");
-		waitFor5Seconds();
-		updateStatus(x,"under delivery");
-		waitFor5Seconds();
-		updateStatus(x, "Delivered");
-		System.out.println(deliveryBeans);
-
-		return Mono.empty();
 	}
 
 	private void waitFor5Seconds() {
