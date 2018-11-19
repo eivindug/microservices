@@ -41,7 +41,7 @@ public class DeliveryController implements ApplicationListener<ApplicationReadyE
     	return ""+orderIds++;
 	}
 
-    @PostMapping(value="/createOrder", consumes = MediaType.APPLICATION_JSON_VALUE)
+        @PostMapping(value="/createOrder", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public Mono<String> createOrder(@RequestBody ShoppingCartServiceBean service1Bean) {
     	DeliveryBean db = new DeliveryBean();
     	db.setId(incrementOrderId());
@@ -83,7 +83,7 @@ public class DeliveryController implements ApplicationListener<ApplicationReadyE
 		return Mono.empty();
 	}
 
-	@PostMapping(value = "/deliverOrder/{orderId}")
+	@PostMapping(value = "/deliverOrder/{orderId}", produces = MediaType.APPLICATION_JSON_VALUE, consumes= MediaType.APPLICATION_JSON_VALUE)
 	Mono<Void> deliverOrder(@PathVariable String orderId) {
     	String x = orderId;
 		LOGGER.info("create: id={}", x);

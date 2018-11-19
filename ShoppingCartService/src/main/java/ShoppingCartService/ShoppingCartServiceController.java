@@ -84,8 +84,13 @@ public class ShoppingCartServiceController implements ApplicationListener<Applic
             }
             WebClient.RequestHeadersSpec p = webClientBuilder.filter(logRequest()).build().post().uri("http://delivery-service/createOrder").body(BodyInserters.fromObject(shoppingCarts.get(index)));
             Mono<String> id= p.retrieve().bodyToMono(String.class);
-            id.subscribe(value -> webClientBuilder.filter(logRequest()).build().post().uri("http://delivery-service/deliverOrder/{orderId}", value).retrieve());
-            return id;
+            Mono<String> returnMono=Mono.create(emitter -> id.subscribe(value -> {
+                deliver(value);
+            emitter.success(value);}) );
+            
+            
+            //id.subscribe(value -> deliver(value));
+            return returnMono;
         }
         private static ExchangeFilterFunction logRequest() {
         return ExchangeFilterFunction.ofRequestProcessor(clientRequest -> {
@@ -94,6 +99,10 @@ public class ShoppingCartServiceController implements ApplicationListener<Applic
             return Mono.just(clientRequest);
         });
     }
+        private Mono<Void> deliver(String id){
+            WebClient.RequestHeadersSpec p = webClientBuilder.filter(logRequest()).build().post().uri("http://delivery-service/deliverOrder/{orderId}", id);
+            return p.retrieve().bodyToMono(Void.class);
+        }
 
     private static class Item {
         private int id;
